@@ -1,0 +1,6 @@
+node_modules
+dist
+.DS_Store
+*.local
+base64.txt
+update_app.py

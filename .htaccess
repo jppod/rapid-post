@@ -1,0 +1,14 @@
+# Impedir el listado de directorios
+Options -Indexes
+
+# Proteger archivos sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Asegurar que las imágenes no se ejecuten como scripts
+<FilesMatch "\.(png|jpe?g|gif|webp)$">
+    Header set Content-Type "image"
+    Header set X-Content-Type-Options "nosniff"
+</FilesMatch>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anaco News | Editor Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@400;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>ANACO<span>NEWS</span></h1>
+            <div class="header-actions">
+                <button id="toggle-grid" class="tool-btn" title="Cuadrícula">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="canvas-container-wrapper">
+            <div class="canvas-wrapper">
+                <canvas id="editor-canvas"></canvas>
+                <div id="grid-overlay"></div>
+            </div>
+        </main>
+
+        <section class="controls">
+            <div class="control-group">
+                <label class="control-label">Imagen de Fondo</label>
+                <div class="file-input-wrapper">
+                    <button class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/><line x1="16" y1="5" x2="22" y2="5"/><line x1="19" y1="2" x2="19" y2="8"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        Cargar Noticia
+                    </button>
+                    <input type="file" id="bg-upload" accept="image/*">
+                </div>
+                <p class="hint">Puedes arrastrar y escalar la foto de fondo directamente en el cuadro</p>
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Categoría</span>
+                    <span id="current-cat-display">NOTICIAS</span>
+                </div>
+                <div class="category-grid">
+                    <button class="cat-btn active" data-cat="NOTICIAS">NOTICIAS</button>
+                    <button class="cat-btn" data-cat="SUCESOS">SUCESOS</button>
+                    <button class="cat-btn" data-cat="SOCIALES">SOCIALES</button>
+                    <button class="cat-btn" data-cat="EVENTOS">EVENTOS</button>
+                    <button class="cat-btn" data-cat="PUBLICIDAD">PUBLICIDAD</button>
+                    <button class="cat-btn" data-cat="DEPORTES">DEPORTES</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Texto de la Noticia</label>
+                <textarea id="news-text" placeholder="Escribe el titular aquí..." style="width: 100%; background: var(--surface-light); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; color: white; font-family: var(--font-body); resize: none; height: 80px;"></textarea>
+                <div class="text-tools">
+                    <button class="tool-btn" id="align-left" title="Izquierda">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                    </button>
+                    <button class="tool-btn" id="align-center" title="Centro">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="17" y1="12" x2="7" y2="12"/><line x1="19" y1="18" x2="5" y2="18"/></svg>
+                    </button>
+                    <button class="tool-btn" id="align-right" title="Derecha">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="12" x2="9" y2="12"/><line x1="21" y1="18" x2="7" y2="18"/></svg>
+                    </button>
+                    <button class="tool-btn" id="align-justify" title="Justificado">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+                    </button>
+                    <div style="width: 1px; background: var(--glass-border); margin: 4px;"></div>
+                    <select id="font-family" style="background: transparent; border: none; color: white; font-size: 0.7rem; font-weight: bold; width: 80px;">
+                        <option value="Inter" selected>Inter</option>
+                        <option value="Outfit">Outfit</option>
+                        <option value="serif">Serif</option>
+                        <option value="monospace">Mono</option>
+                    </select>
+                    <input type="number" id="font-size" value="60" step="2" style="width: 45px; background: transparent; border: none; color: white; font-weight: bold; text-align: center;">
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" id="reset-canvas">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    Reiniciar
+                </button>
+                <button class="btn btn-success" id="download-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    DESCARGAR
+                </button>
+            </div>
+        </section>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
